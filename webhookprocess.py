@@ -11,7 +11,7 @@ def favicon():
                                'favicon.ico', mimetype='image/favicon.png')
 """
 @app.route('/')
-@app.route('/home')
+@app.route('/homepage')
 def home():
     return "Hello World"
 
