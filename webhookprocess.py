@@ -10,7 +10,7 @@ import os
 import pandas as pd
 from csv import DictReader
 import re
-import logging
+
 
 app = Flask(__name__)
 
@@ -24,7 +24,7 @@ def favicon():
 @app.route('/homepage')
 def home():
     print('success')
-    logger.info('success')
+    app.logger.info('success 1')
     return "Hello World Success changed"
 
 @app.route('/mdrmcsv')
@@ -37,11 +37,7 @@ def mdrmcsv():
     # extracting zipfile from URL
     with urlopen(req) as response, open(file_name, 'wb') as out_file:
         shutil.copyfileobj(response, out_file)
-        logger.info(response)
-        logger.info(out_file)
-        print(response)
-        print(out_file)
-
+       
         # extracting required file from zipfile
         with zipfile.ZipFile(file_name) as zf:
             zf.extract('MDRM_CSV.csv')
