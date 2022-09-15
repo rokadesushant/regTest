@@ -23,7 +23,7 @@ def favicon():
 @app.route('/')
 @app.route('/homepage')
 def home():
-    print('success')
+    print('success abc')
     app.logger.info('success 1')
     return "Hello World Success changed"
 
