@@ -10,6 +10,7 @@ import os
 import pandas as pd
 from csv import DictReader
 import re
+import logging
 
 app = Flask(__name__)
 
