@@ -41,10 +41,11 @@ def mdrmcsv():
         print(out_file)
        
         # extracting required file from zipfile
-        '''
+        
         with zipfile.ZipFile(file_name) as zf:
-            zf.extract('MDRM_CSV.csv')
-
+            print(zf)
+            #zf.extract('MDRM_CSV.csv')
+'''
     # deleting the zipfile from the directory
     os.remove('MDRM.zip')
 
