@@ -34,7 +34,7 @@ def mdrmcsv():
 
     # extracting zipfile from URL
     with urlopen(req) as response, open(file_name, 'wb') as out_file:
-        #shutil.copyfileobj(response, out_file)
+        shutil.copyfileobj(response, out_file)
 
         # extracting required file from zipfile
         with zipfile.ZipFile(file_name) as zf:
