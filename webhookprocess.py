@@ -2,11 +2,11 @@ import sys
 from flask import Flask, jsonify
 import os
 from flask import send_from_directory
+from io import StringIO,BytesIO,TextIOWrapper
 
 import zipfile
 from urllib.request import urlopen,Request
 import shutil
-import os
 import pandas as pd
 from csv import DictReader
 import re
@@ -30,66 +30,59 @@ def home():
 @app.route('/mdrmcsv')
 def mdrmcsv():
     url = 'https://www.federalreserve.gov/apps/mdrm/pdf/MDRM.zip'
-    file_name = 'MDRM.zip'
 
-    req = Request('https://www.federalreserve.gov/apps/mdrm/pdf/MDRM.zip', headers={'User-Agent': 'Mozilla/5.0'})
+req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
 
-    # extracting zipfile from URL
-    with urlopen(req) as response, open(file_name, 'wb') as out_file:
-        shutil.copyfileobj(response, out_file)
-        print(response)
-        print(out_file)
-       
-        # extracting required file from zipfile
-        '''
-        with zipfile.ZipFile(file_name) as zf:
-            
-            #zf.extract('MDRM_CSV.csv')
+#resp = urllib.request.urlopen(url)
 
-    # deleting the zipfile from the directory
-    os.remove('MDRM.zip')
+zipfile = ZipFile(BytesIO(urlopen(req).read()))
 
-    # loading data from the file
-    data = pd.read_csv('MDRM_CSV.csv', skiprows=1)
-    data["Name"] = ""
+csvdata = TextIOWrapper(zipfile.open('MDRM_CSV.csv'),encoding='utf-8')
 
-    res = data.columns
-    #print(res)
+data = pd.read_csv(csvdata,skiprows=1)
 
-    data.columns.values[0] = "Mnemonic__c"
-    data.columns.values[1] = "Item_Code__c"
-    data.columns.values[2] = "Start_Date__c"
-    data.columns.values[3] = "End_Date__c"
-    data.columns.values[5] = "Confidentiality__c"
-    data.columns.values[6] = "Item_Type__c"
-    data.columns.values[7] = "Reporting_form__c"
+#print(data)
 
-    mdrmDataDict = data.to_dict('records')
+data["Name"] = ""
 
-    count = 0
+res = data.columns
+print(res)
 
-    # format the data
-    for mdrm in mdrmDataDict:
+data.columns.values[0] = "Mnemonic__c"
+data.columns.values[1] = "Item_Code__c"
+data.columns.values[2] = "Start_Date__c"
+data.columns.values[3] = "End_Date__c"
+data.columns.values[5] = "Confidentiality__c"
+data.columns.values[6] = "Item_Type__c"
+data.columns.values[7] = "Reporting_form__c"
 
-        if mdrm['Name'] == '':
-            # print('reporting form',type(mdrm['Reporting_form__c']))
-            # print('Mnomonic',type(mdrm['Mnemonic__c']))
-            # print('Item code',type(mdrm['Item_Code__c']))
-            # print('Name',type(mdrm['Name']))
-            mdrm['Name'] = str(mdrm['Reporting_form__c']) + mdrm['Mnemonic__c'] + str(mdrm['Item_Code__c'])
 
-        if mdrm['Description']:
-            mdrm['Description'] = re.sub('<[^<]+?>', '', str(mdrm['Description']))
-            mdrm['Description'] = mdrm['Description'].replace('&#x0D;', '')
-            count += 1
-            # print(mdrm['Description'])
 
-    # print(type(d))
+mdrmDataDict = data.to_dict('records')
 
-    #print(count)
+count=0
 
-    #print(mdrmDataDict[1])
-'''
+# format the data
+for mdrm in mdrmDataDict:
+
+    if mdrm['Name'] =='':
+        # print('reporting form',type(mdrm['Reporting_form__c']))
+        # print('Mnomonic',type(mdrm['Mnemonic__c']))
+        # print('Item code',type(mdrm['Item_Code__c']))
+        # print('Name',type(mdrm['Name']))
+        mdrm['Name']= str(mdrm['Reporting_form__c'])+mdrm['Mnemonic__c']+str(mdrm['Item_Code__c'])
+
+    if mdrm['Description']:
+        mdrm['Description'] = re.sub('<[^<]+?>', '', str(mdrm['Description']))
+        mdrm['Description'] = mdrm['Description'].replace('&#x0D;','')
+        count += 1
+        #print(mdrm['Description'])
+
+
+#print(type(d))
+
+print(count)
+print(mdrmDataDict[1])
     return "MDRMCSV Success"
 
 
