@@ -37,8 +37,11 @@ def mdrmcsv():
     # extracting zipfile from URL
     with urlopen(req) as response, open(file_name, 'wb') as out_file:
         shutil.copyfileobj(response, out_file)
+        print(response)
+        print(out_file)
        
         # extracting required file from zipfile
+        '''
         with zipfile.ZipFile(file_name) as zf:
             zf.extract('MDRM_CSV.csv')
 
@@ -85,7 +88,7 @@ def mdrmcsv():
     #print(count)
 
     #print(mdrmDataDict[1])
-
+'''
     return "MDRMCSV Success"
 
 
