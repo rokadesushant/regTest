@@ -1,3 +1,4 @@
+import sys
 from flask import Flask, jsonify
 import os
 from flask import send_from_directory
@@ -46,7 +47,7 @@ def mdrmcsv():
     data["Name"] = ""
 
     res = data.columns
-    print(res)
+    #print(res)
 
     data.columns.values[0] = "Mnemonic__c"
     data.columns.values[1] = "Item_Code__c"
@@ -78,9 +79,9 @@ def mdrmcsv():
 
     # print(type(d))
 
-    print(count)
+    #print(count)
 
-    print(mdrmDataDict[1])
+    #print(mdrmDataDict[1])
 
     return "MDRMCSV Success"
 
@@ -88,4 +89,6 @@ def mdrmcsv():
 if __name__ == "__main__":
     app.secret_key = 'ItIsASecret'
     app.debug = True
+    app.logger.addHandler(logging.StreamHandler(sys.stdout))
+    app.logger.setLevel(logging.ERROR)
     app.run()
