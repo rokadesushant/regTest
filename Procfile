@@ -1,1 +1,1 @@
-web: gunicorn webhookprocess:app --log-file -
+web: gunicorn webhookprocess:app --log-level=debug
