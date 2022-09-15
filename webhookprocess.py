@@ -23,6 +23,7 @@ def favicon():
 @app.route('/homepage')
 def home():
     print('success')
+    logger.info('success')
     return "Hello World Success changed"
 
 @app.route('/mdrmcsv')
@@ -35,6 +36,8 @@ def mdrmcsv():
     # extracting zipfile from URL
     with urlopen(req) as response, open(file_name, 'wb') as out_file:
         shutil.copyfileobj(response, out_file)
+        logger.info('Also not printing!,'response)
+        logger.info(out_file)
         print(response)
         print(out_file)
 
