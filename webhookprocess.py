@@ -4,7 +4,7 @@ import os
 from flask import send_from_directory
 from io import StringIO,BytesIO,TextIOWrapper
 
-import zipfile
+from zipfile import Zipfile
 from urllib.request import urlopen,Request
 import shutil
 import pandas as pd
